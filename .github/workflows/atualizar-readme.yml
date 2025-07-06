@@ -1,0 +1,26 @@
+name: Atualizar README
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Substituir variáveis no template
+        run: |
+          python3 .github/atualizar.py
+
+      - name: Commit e push
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add README.md
+          git commit -m "Atualiza README automaticamente"
+          git push
